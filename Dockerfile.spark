@@ -1,0 +1,33 @@
+FROM apache/spark:3.4.1
+
+USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# S3A JARs
+RUN curl -o /opt/spark/jars/hadoop-aws-3.3.4.jar \
+    https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.4/hadoop-aws-3.3.4.jar && \
+    curl -o /opt/spark/jars/aws-java-sdk-bundle-1.12.262.jar \
+    https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.262/aws-java-sdk-bundle-1.12.262.jar
+
+# Delta Lake JAR (phải đúng version với Spark 3.4.x)
+RUN curl -o /opt/spark/jars/delta-spark_2.12-2.4.0.jar \
+    https://repo1.maven.org/maven2/io/delta/delta-spark_2.12/2.4.0/delta-spark_2.12-2.4.0.jar && \
+    curl -o /opt/spark/jars/delta-storage-2.4.0.jar \
+    https://repo1.maven.org/maven2/io/delta/delta-storage/2.4.0/delta-storage-2.4.0.jar
+
+RUN pip3 install --no-cache-dir \
+    delta-spark==2.4.0 \
+    boto3==1.34.0 \
+    pandas==2.0.3 \
+    pyarrow==12.0.1 \
+    minio==7.2.3 \
+    python-dateutil==2.8.2
+
+COPY entrypoint.sh /opt/entrypoint-custom.sh
+RUN chmod +x /opt/entrypoint-custom.sh
+
+WORKDIR /opt/spark
+ENTRYPOINT ["/opt/entrypoint-custom.sh"]
