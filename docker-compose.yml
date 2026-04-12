@@ -6,8 +6,10 @@ volumes:
   minio_data:
   spark_logs:
   ivy_cache:
+  ml_models:       # lưu model output dùng chung
 
 services:
+  # ── MinIO ──────────────────────────────────────────────────
   minio:
     image: minio/minio:RELEASE.2024-01-18T22-51-28Z
     container_name: minio
@@ -24,6 +26,7 @@ services:
     networks:
       - pipeline_net
 
+  # ── Spark Master ───────────────────────────────────────────
   spark-master:
     build:
       context: .
@@ -48,6 +51,7 @@ services:
     networks:
       - pipeline_net
 
+  # ── Spark Worker 1 ─────────────────────────────────────────
   spark-worker-1:
     build:
       context: .
@@ -73,6 +77,7 @@ services:
     networks:
       - pipeline_net
 
+  # ── Spark Worker 2 ─────────────────────────────────────────
   spark-worker-2:
     build:
       context: .
@@ -97,3 +102,29 @@ services:
       - ivy_cache:/root/.ivy2
     networks:
       - pipeline_net
+
+  # ── ML Trainer (LSTM) ──────────────────────────────────────
+  # Service riêng, tách hoàn toàn khỏi Spark để tránh xung đột
+  # dependency (protobuf, grpcio, tensorflow vs pyspark).
+  # Chạy 1 lần khi cần train: docker compose run --rm ml-trainer
+  ml-trainer:
+    build:
+      context: .
+      dockerfile: Dockerfile.ml
+    container_name: ml-trainer
+    # Không restart tự động — chỉ chạy khi gọi thủ công
+    restart: "no"
+    depends_on:
+      - minio
+    environment:
+      - MINIO_ENDPOINT=http://minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin123
+    volumes:
+      - ./spark/jobs:/app/spark/jobs   # mount code jobs
+      - ml_models:/app/models          # lưu model output
+    networks:
+      - pipeline_net
+    # Mặc định không chạy gì, gọi thủ công:
+    #   docker compose run --rm ml-trainer python spark/jobs/train_lstm_demand.py
+    command: ["echo", "ML Trainer ready. Run: docker compose run --rm ml-trainer python spark/jobs/train_lstm_demand.py"]

@@ -12,7 +12,7 @@ SPARK_MASTER="spark://spark-master:7077"
 DELTA_PACKAGE="io.delta:delta-core_2.12:2.4.0"
 
 SILVER_JOB="/opt/spark/jobs/pipeline_silver.py"
-GOLD_JOB="/opt/spark/jobs/pipeline_gold.py"
+# GOLD_JOB="/opt/spark/jobs/pipeline_gold.py"
 
 COMMON_CONF=(
   --master "${SPARK_MASTER}"
@@ -45,17 +45,16 @@ echo "✓ Silver done!"
 echo ""
 
 # ── GOLD ─────────────────────────────────────────────────────
-echo "======================================================"
-echo " [2/2] Gold Pipeline — Silver → Gold (demand by zone)"
-echo "======================================================"
-docker exec spark-master \
-  /opt/spark/bin/spark-submit "${COMMON_CONF[@]}" "${GOLD_JOB}"
+# echo "======================================================"
+# echo " [2/2] Gold Pipeline — Silver → Gold (demand by zone)"
+# echo "======================================================"
+# docker exec spark-master \
+#   /opt/spark/bin/spark-submit "${COMMON_CONF[@]}" "${GOLD_JOB}"
 
 echo ""
 echo "======================================================"
 echo " ✓ All done!"
 echo " MinIO console → http://localhost:9001"
-echo "   minioadmin / minioadmin123"
 echo "   Bucket: lakehouse"
 echo "   silver/all/              ← Delta (cleaned)"
 echo "   gold/demand_by_zone/     ← Delta (features for model)"

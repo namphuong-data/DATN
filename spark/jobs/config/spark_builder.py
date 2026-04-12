@@ -24,6 +24,9 @@ def get_spark_session(app_name="Spark_App"):
             "org.apache.spark.sql.delta.catalog.DeltaCatalog",
         )
         .config("spark.sql.shuffle.partitions", "4")
+        # Buộc Spark đọc/ghi timestamp nguyên bản, không áp timezone hệ thống
+        # Đảm bảo F.hour(), F.dayofweek()... trả về đúng giá trị trong data
+        .config("spark.sql.session.timeZone", "UTC")
     )
 
     return configure_spark_with_delta_pip(builder).getOrCreate()
