@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker compose *)",
+      "Bash(MSYS_NO_PATHCONV=1 docker compose run --rm ml-trainer python spark/jobs/diagnose_lstm.py --delta --model /app/models/lstm_v3_20260417_111709 --out /app/project)",
+      "Bash(MSYS_NO_PATHCONV=1 docker compose run --rm ml-trainer python spark/jobs/predict_demo.py --model /app/models/lstm_v3_20260418_064120 --date1 2024-09-10 --date2 2024-11-28 --out /app/project)",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}

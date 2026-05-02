@@ -1,3 +1,201 @@
+# networks:
+#   pipeline_net:
+#     driver: bridge
+
+# volumes:
+#   minio_data:
+#   spark_logs:
+#   ivy_cache:
+#   ml_models:
+
+# services:
+
+#   # ── Zookeeper (Kafka dependency) ───────────────────────────
+#   zookeeper:
+#     image: confluentinc/cp-zookeeper:7.5.0
+#     container_name: zookeeper
+#     restart: unless-stopped
+#     environment:
+#       ZOOKEEPER_CLIENT_PORT: 2181
+#       ZOOKEEPER_TICK_TIME: 2000
+#     networks:
+#       - pipeline_net
+
+#   # ── Kafka Broker ───────────────────────────────────────────
+#   kafka:
+#     image: confluentinc/cp-kafka:7.5.0
+#     container_name: kafka
+#     restart: unless-stopped
+#     depends_on:
+#       - zookeeper
+#     ports:
+#       - "9092:9092"
+#     environment:
+#       KAFKA_BROKER_ID: 1
+#       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+#       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+#       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
+#       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+#       KAFKA_MESSAGE_MAX_BYTES: 104857600
+#       KAFKA_REPLICA_FETCH_MAX_BYTES: 104857600
+#     healthcheck:
+#       test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "kafka:29092"]
+#       interval: 10s
+#       timeout: 10s
+#       retries: 10
+#       start_period: 30s
+#     networks:
+#       - pipeline_net
+
+#   # ── Streamlit Dashboard ────────────────────────────────────
+#   dashboard:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile.dashboard
+#     container_name: dashboard
+#     restart: unless-stopped
+#     depends_on:
+#       kafka:
+#         condition: service_healthy
+#       minio:
+#         condition: service_started
+#     ports:
+#       - "8501:8501"
+#     environment:
+#       - MINIO_ENDPOINT=http://minio:9000
+#       - MINIO_ACCESS_KEY=minioadmin
+#       - MINIO_SECRET_KEY=minioadmin123
+#       - KAFKA_BOOTSTRAP=kafka:29092
+#     volumes:
+#       - ./dashboard:/app/dashboard
+#       - ./models:/app/models:ro
+#       - ./dataset:/app/dataset:ro
+#     networks:
+#       - pipeline_net
+
+
+#   minio:
+#     image: minio/minio:RELEASE.2024-01-18T22-51-28Z
+#     container_name: minio
+#     restart: unless-stopped
+#     ports:
+#       - "9000:9000"
+#       - "9001:9001"
+#     environment:
+#       MINIO_ROOT_USER: minioadmin
+#       MINIO_ROOT_PASSWORD: minioadmin123
+#     command: server /data --console-address ":9001"
+#     volumes:
+#       - minio_data:/data
+#     networks:
+#       - pipeline_net
+
+#   spark-master:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile.spark
+#     container_name: spark-master
+#     restart: unless-stopped
+#     environment:
+#       - SPARK_MODE=master
+#       - SPARK_MASTER_HOST=spark-master
+#       - SPARK_MASTER_PORT=7077
+#       - SPARK_MASTER_WEBUI_PORT=8080
+#       - AWS_ACCESS_KEY_ID=minioadmin
+#       - AWS_SECRET_ACCESS_KEY=minioadmin123
+#     ports:
+#       - "7077:7077"
+#       - "8080:8080"
+#     volumes:
+#       - ./spark/jobs:/opt/spark/jobs
+#       - ./dataset:/opt/spark/dataset:ro
+#       - spark_logs:/opt/spark/logs
+#       - ivy_cache:/root/.ivy2
+#     networks:
+#       - pipeline_net
+
+#   spark-worker-1:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile.spark
+#     container_name: spark-worker-1
+#     restart: unless-stopped
+#     depends_on:
+#       - spark-master
+#     environment:
+#       - SPARK_MODE=worker
+#       - SPARK_MASTER_URL=spark://spark-master:7077
+#       - SPARK_WORKER_MEMORY=2G
+#       - SPARK_WORKER_CORES=2
+#       - AWS_ACCESS_KEY_ID=minioadmin
+#       - AWS_SECRET_ACCESS_KEY=minioadmin123
+#     ports:
+#       - "8081:8081"
+#     volumes:
+#       - ./spark/jobs:/opt/spark/jobs
+#       - ./dataset:/opt/spark/dataset:ro
+#       - spark_logs:/opt/spark/logs
+#       - ivy_cache:/root/.ivy2
+#     networks:
+#       - pipeline_net
+
+#   spark-worker-2:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile.spark
+#     container_name: spark-worker-2
+#     restart: unless-stopped
+#     depends_on:
+#       - spark-master
+#     environment:
+#       - SPARK_MODE=worker
+#       - SPARK_MASTER_URL=spark://spark-master:7077
+#       - SPARK_WORKER_MEMORY=2G
+#       - SPARK_WORKER_CORES=2
+#       - AWS_ACCESS_KEY_ID=minioadmin
+#       - AWS_SECRET_ACCESS_KEY=minioadmin123
+#     ports:
+#       - "8082:8082"
+#     volumes:
+#       - ./spark/jobs:/opt/spark/jobs
+#       - ./dataset:/opt/spark/dataset:ro
+#       - spark_logs:/opt/spark/logs
+#       - ivy_cache:/root/.ivy2
+#     networks:
+#       - pipeline_net
+
+#   # ── ML Trainer (LSTM + GPU) ────────────────────────────────
+#   ml-trainer:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile.ml
+#     container_name: ml-trainer
+#     restart: "no"
+#     depends_on:
+#       - minio
+#     environment:
+#       - MINIO_ENDPOINT=http://minio:9000
+#       - MINIO_ACCESS_KEY=minioadmin
+#       - MINIO_SECRET_KEY=minioadmin123
+#     volumes:
+#       - ./spark/jobs:/app/spark/jobs
+#       - ./models:/app/models
+#       - ./:/app/project
+#     networks:
+#       - pipeline_net
+#     # ── GPU support ───────────────────────────────────────────
+#     # Yêu cầu: nvidia-container-toolkit cài trên host
+#     # Nếu KHÔNG có GPU: xóa hoặc comment block deploy bên dưới
+#     deploy:
+#       resources:
+#         reservations:
+#           devices:
+#             - driver: nvidia
+#               count: all
+#               capabilities: [gpu]
+#     command: ["echo", "ML Trainer ready. Run: docker compose run --rm ml-trainer python spark/jobs/train_lstm_demand.py"]
 networks:
   pipeline_net:
     driver: bridge
@@ -6,10 +204,60 @@ volumes:
   minio_data:
   spark_logs:
   ivy_cache:
-  ml_models:       # lưu model output dùng chung
+  ml_models:
+
+x-minio-client-env: &minio_client_env
+  MINIO_ENDPOINT: http://minio:9000
+  MINIO_ACCESS_KEY: minioadmin
+  MINIO_SECRET_KEY: minioadmin123
+  AWS_ACCESS_KEY_ID: minioadmin
+  AWS_SECRET_ACCESS_KEY: minioadmin123
+  AWS_ENDPOINT_URL: http://minio:9000
+  AWS_ENDPOINT_URL_S3: http://minio:9000
+  AWS_REGION: us-east-1
+  AWS_DEFAULT_REGION: us-east-1
+  AWS_ALLOW_HTTP: "true"
+  AWS_S3_ALLOW_UNSAFE_RENAME: "true"
+  AWS_EC2_METADATA_DISABLED: "true"
 
 services:
-  # ── MinIO ──────────────────────────────────────────────────
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper
+    restart: unless-stopped
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - pipeline_net
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    restart: unless-stopped
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_MESSAGE_MAX_BYTES: 104857600
+      KAFKA_REPLICA_FETCH_MAX_BYTES: 104857600
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "kafka:29092"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - pipeline_net
+
   minio:
     image: minio/minio:RELEASE.2024-01-18T22-51-28Z
     container_name: minio
@@ -26,20 +274,48 @@ services:
     networks:
       - pipeline_net
 
-  # ── Spark Master ───────────────────────────────────────────
+  dashboard:
+    image: phuongnam0624/datn-dashboard:latest
+    container_name: dashboard
+    restart: unless-stopped
+    depends_on:
+      kafka:
+        condition: service_healthy
+      minio:
+        condition: service_started
+    ports:
+      - "8501:8501"
+    environment:
+      <<: *minio_client_env
+      KAFKA_BOOTSTRAP: kafka:29092
+      # LSTM routing theo khung giờ trong dashboard/pipeline.py:
+      # - 00-09h dùng model specialist (nếu để trống sẽ fallback model chính)
+      # - 17-23h dùng model specialist (nếu để trống sẽ fallback model chính)
+      LSTM_MODEL_DIR_00_09: ""
+      LSTM_MODEL_DIR_17_23: ""
+      # Giờ 00-09: LightGBM zero-inflated v7 (train_lgbm_low_hour_0_4.py). Để trống = latest theo mtime trong ./models
+      ENABLE_LOW_HOUR_MODEL: "1"
+      LOW_HOUR_MODEL_DIR: "lgbm_low_0_9_zinf_v7_20260430_232510"
+      # Giờ 17-23: bật LightGBM evening model (regression/bucket đều dùng chung biến ENV này)
+      ENABLE_EVENING_BUCKET_MODEL: "1"
+      EVENING_BUCKET_MODEL_DIR: "lgbm_evening_17_23_ensemble_v9_20260430_225653"
+    volumes:
+      - ./dashboard:/app/dashboard
+      - ./models:/app/models:ro
+      - ./dataset:/app/dataset:ro
+    networks:
+      - pipeline_net
+
   spark-master:
-    build:
-      context: .
-      dockerfile: Dockerfile.spark
+    image: phuongnam0624/datn-spark:latest
     container_name: spark-master
     restart: unless-stopped
     environment:
-      - SPARK_MODE=master
-      - SPARK_MASTER_HOST=spark-master
-      - SPARK_MASTER_PORT=7077
-      - SPARK_MASTER_WEBUI_PORT=8080
-      - AWS_ACCESS_KEY_ID=minioadmin
-      - AWS_SECRET_ACCESS_KEY=minioadmin123
+      <<: *minio_client_env
+      SPARK_MODE: master
+      SPARK_MASTER_HOST: spark-master
+      SPARK_MASTER_PORT: "7077"
+      SPARK_MASTER_WEBUI_PORT: "8080"
     ports:
       - "7077:7077"
       - "8080:8080"
@@ -51,22 +327,18 @@ services:
     networks:
       - pipeline_net
 
-  # ── Spark Worker 1 ─────────────────────────────────────────
   spark-worker-1:
-    build:
-      context: .
-      dockerfile: Dockerfile.spark
+    image: phuongnam0624/datn-spark:latest
     container_name: spark-worker-1
     restart: unless-stopped
     depends_on:
       - spark-master
     environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=2G
-      - SPARK_WORKER_CORES=2
-      - AWS_ACCESS_KEY_ID=minioadmin
-      - AWS_SECRET_ACCESS_KEY=minioadmin123
+      <<: *minio_client_env
+      SPARK_MODE: worker
+      SPARK_MASTER_URL: spark://spark-master:7077
+      SPARK_WORKER_MEMORY: 2G
+      SPARK_WORKER_CORES: "2"
     ports:
       - "8081:8081"
     volumes:
@@ -77,22 +349,18 @@ services:
     networks:
       - pipeline_net
 
-  # ── Spark Worker 2 ─────────────────────────────────────────
   spark-worker-2:
-    build:
-      context: .
-      dockerfile: Dockerfile.spark
+    image: phuongnam0624/datn-spark:latest
     container_name: spark-worker-2
     restart: unless-stopped
     depends_on:
       - spark-master
     environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=2G
-      - SPARK_WORKER_CORES=2
-      - AWS_ACCESS_KEY_ID=minioadmin
-      - AWS_SECRET_ACCESS_KEY=minioadmin123
+      <<: *minio_client_env
+      SPARK_MODE: worker
+      SPARK_MASTER_URL: spark://spark-master:7077
+      SPARK_WORKER_MEMORY: 2G
+      SPARK_WORKER_CORES: "2"
     ports:
       - "8082:8082"
     volumes:
@@ -103,28 +371,29 @@ services:
     networks:
       - pipeline_net
 
-  # ── ML Trainer (LSTM) ──────────────────────────────────────
-  # Service riêng, tách hoàn toàn khỏi Spark để tránh xung đột
-  # dependency (protobuf, grpcio, tensorflow vs pyspark).
-  # Chạy 1 lần khi cần train: docker compose run --rm ml-trainer
   ml-trainer:
-    build:
-      context: .
-      dockerfile: Dockerfile.ml
+    image: phuongnam0624/datn-ml:latest
     container_name: ml-trainer
-    # Không restart tự động — chỉ chạy khi gọi thủ công
     restart: "no"
+    # DataLoader num_workers=8 + prefetch: cần shm đủ (bus error nếu quá nhỏ)
+    shm_size: "4gb"
     depends_on:
       - minio
     environment:
-      - MINIO_ENDPOINT=http://minio:9000
-      - MINIO_ACCESS_KEY=minioadmin
-      - MINIO_SECRET_KEY=minioadmin123
+      <<: *minio_client_env
     volumes:
-      - ./spark/jobs:/app/spark/jobs   # mount code jobs
-      - ml_models:/app/models          # lưu model output
+      - ./spark/jobs:/app/spark/jobs
+      - ./models:/app/models
+      - ./:/app/project
     networks:
       - pipeline_net
-    # Mặc định không chạy gì, gọi thủ công:
-    #   docker compose run --rm ml-trainer python spark/jobs/train_lstm_demand.py
-    command: ["echo", "ML Trainer ready. Run: docker compose run --rm ml-trainer python spark/jobs/train_lstm_demand.py"]
+    # GPU support: yêu cầu nvidia-container-toolkit trên host.
+    # Nếu máy không có GPU, comment toàn bộ block deploy này.
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    command: ["echo", "ML Trainer ready. Ví dụ: docker compose run --rm ml-trainer python spark/jobs/train_lstm_demand.py"]

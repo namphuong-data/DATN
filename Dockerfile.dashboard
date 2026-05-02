@@ -1,0 +1,32 @@
+FROM python:3.10-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Inference: PyTorch (LSTM .pt) + LightGBM — không dùng TensorFlow
+RUN pip install --no-cache-dir \
+    streamlit \
+    streamlit-autorefresh \
+    "confluent-kafka>=2.3.0" \
+    "deltalake[pyarrow]" \
+    pandas \
+    scikit-learn \
+    joblib \
+    holidays \
+    plotly \
+    s3fs \
+    boto3 \
+    lightgbm==4.3.0
+
+# pipeline.py: suy luận LSTM (best_lstm.pt / lstm_weights.pt) cần PyTorch
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+
+WORKDIR /app
+EXPOSE 8501
+
+CMD ["streamlit", "run", "dashboard/app.py", \
+     "--server.port=8501", \
+     "--server.address=0.0.0.0", \
+     "--server.headless=true", \
+     "--theme.base=dark"]   

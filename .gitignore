@@ -1,2 +1,23 @@
 /data_test
 /dataset
+# models/: bỏ qua mọi artifact; chỉ theo dõi metrics.csv và *.png trong từng thư mục con
+/models/**/*
+!/models/**/
+!/models/**/metrics.csv
+!/models/**/*.png
+/research
+/eda.csv 
+/eda.py
+/test.py
+/mô tả.odt
+/MODEL_COMPARISON.md
+/MODEL_REPORT.md
+/PROJECT_HANDBOOK.md
+/PROJECT_OVERVIEW_VI.md
+/PROJECT_SUMMARY.md
+/train_lstm_demand.py
+/train_lightgbm_demand - Copy.py
+/spark-defaults.conf
+/init_views.sql
+/entrypoint.sh
+/run_silver_gold_backup.sh
