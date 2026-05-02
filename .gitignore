@@ -21,3 +21,4 @@
 /init_views.sql
 /entrypoint.sh
 /run_silver_gold_backup.sh
+/temp
