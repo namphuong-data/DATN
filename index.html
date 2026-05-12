@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chử Trần Phương Nam - Data Practitioner (Entry-level)</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav>
+      <a href="#" class="nav-logo">Nam Phương</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#about">LinkedIn</a></li>
+        <!-- <li><a href="#contact">Contact</a></li> -->
+      </ul>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-content">
+        <p class="hero-eyebrow">Data Practitioner (Entry-level)</p>
+        <h1 class="hero-title">Chử Trần Phương Nam</h1>
+        <p class="hero-subtitle">
+          I am a final-year Information Technology student at Thuy Loi University (Southern Campus), 
+          aspiring to become a high-impact Data Analyst. 
+          My analytical philosophy centers on uncovering the root causes of complex problems to drive data-informed decisions. 
+          With a solid foundation in Excel, SQL, Power BI, and Python, I am committed to refining my critical thinking and observational skills.
+           My long-term goal is to transition into a Strategic Consultant role, utilizing my current analytical expertise to create sustainable value for any organization.
+        </p>
+        <!-- <a href="#contact" class="btn">Start a conversation</a>   -->
+      </div>
+    </section>
+
+    <section class="portfolio fade-in" id="portfolio">
+      <div class="portfolio-header">
+        <h2>Portfolio</h2>
+      </div>
+      <div class="portfolio-grid">
+        <a class="portfolio-item" href="portfolio-detail.html?project=undp">
+          <div class="portfolio-img">
+            <img
+              src="img/cach-phan-loai-doanh-thu-trong-doanh-nghiep.webp"
+              alt="Data Platform Project"
+              class="project-img"
+            />
+          </div>
+
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">
+              Automated Data Platform for Multi-branch Business
+            </h3>
+            <p class="portfolio-desc">
+              Built an end-to-end automated data platform featuring Medallion
+              architecture and ML-driven revenue forecasting (6-8% MAPE). This
+              system optimizes multi-branch marketing strategies by providing
+              deep visibility into ROI, LTV, and customer retention.
+            </p>
+            <div class="portfolio-tags">
+              <span class="ptag">PostgreSQL (Medallion)</span>
+              <span class="ptag">Apache Airflow (ETL)</span>
+              <span class="ptag">Power BI (Analytics)</span>
+              <span class="ptag">ML (XGBoost/Prophet)</span>
+              <span class="ptag">Data Storytelling</span>
+              <span class="ptag">Automated Reporting</span>
+            </div>
+            <span class="portfolio-cta">View project →</span>
+          </div>
+        </a>
+
+        <a
+          class="portfolio-item"
+          href="portfolio-detail2.html?project=movie-mlops"
+        >
+          <div class="portfolio-img">
+            <img
+              src="img/home_feature-collections-mobile.webp"
+              alt="Real-time Movie Recommendation MLOps Platform"
+              class="project-img"
+            />
+          </div>
+
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">
+              Real-time Movie Recommendation MLOps Platform
+            </h3>
+            <p class="portfolio-desc">
+              Architected a Microservices-based MLOps platform for instant movie
+              recommendations. The system features a Hybrid Data Ingestion
+              (Batch & Streaming), automated ML Lifecycle with Model Registry,
+              and a centralized monitoring system to track Model Drift and
+              infrastructure health.
+            </p>
+            <div class="portfolio-tags">
+              <span class="ptag">MLOps (Docker/Kafka)</span>
+              <span class="ptag">Real-time Streaming</span>
+              <span class="ptag">Redis (Feature Store)</span>
+              <span class="ptag">ML (SVD Algorithm)</span>
+              <span class="ptag">Grafana & Prometheus</span>
+              <span class="ptag">Apache Airflow</span>
+            </div>
+            <span class="portfolio-cta">View project →</span>
+          </div>
+        </a>
+
+        <a
+          class="portfolio-item"
+          href="portfolio-detail3.html?project=nyc-taxi-forecasting"
+        >
+          <div class="portfolio-img">
+            <img
+              src="img/kq_md_images/problem-objective_demand-by-hour_line-chart.png"
+              alt="NYC Taxi Demand Forecasting System"
+              class="project-img"
+            />
+          </div>
+
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">
+              NYC Taxi Demand Forecasting System
+            </h3>
+            <p class="portfolio-desc">
+              Lakehouse end-to-end với Spark, Kafka, Delta Lake trên MinIO; batch
+              và streaming song song, LightGBM &amp; LSTM cho dự báo theo zone
+              và giờ, dashboard Streamlit với inference gần realtime.
+            </p>
+            <div class="portfolio-tags">
+              <span class="ptag">Apache Spark</span>
+              <span class="ptag">Kafka</span>
+              <span class="ptag">Delta Lake</span>
+              <span class="ptag">Docker Compose</span>
+              <span class="ptag">LightGBM / LSTM</span>
+              <span class="ptag">Streamlit</span>
+            </div>
+            <span class="portfolio-cta">View project →</span>
+          </div>
+        </a>
+        
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <span>© 2026 Nam Phuong</span>
+      <a href="https://linkedin.com" target="_blank">LinkedIn ↗</a>
+    </footer>
+
+    <script src="scripts.js"></script>
+  </body>
+</html>

@@ -1,0 +1,325 @@
+/* --- RESET & CẤU TRÚC CƠ BẢN --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --cream: #f5f0ea;
+  --dark: #1a1a18;
+  --warm: #8b7355;
+  --accent: #c4956a;
+  --light-warm: #e8ddd0;
+  --white: #faf8f5;
+  --red-alert: #e74c3c;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--white);
+  color: var(--dark);
+  font-weight: 300;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* --- NAVIGATION --- */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 4rem;
+  background: rgba(250, 248, 245, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--light-warm);
+}
+
+.nav-logo {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: 0.05rem;
+  text-decoration: none;
+  color: var(--dark);
+}
+
+.nav-links {
+  display: flex;
+  gap: 3rem;
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--dark);
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  transition: color 0.3s ease;
+}
+
+.back-btn {
+  text-decoration: none;
+  color: var(--dark);
+  font-size: 0.9rem;
+}
+
+/* --- HERO SECTION --- */
+.detail-hero {
+  padding: 10rem 4rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.breadcrumb {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--warm);
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.detail-hero h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 3.2rem;
+  font-weight: 300;
+  line-height: 1.1;
+}
+
+/* --- MAIN CONTENT & LAYOUT --- */
+.detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 4rem 8rem;
+}
+
+.project-section {
+  margin-bottom: 100px;
+}
+
+.image-wrapper {
+  display: flex;
+  gap: 60px; /* Khoảng cách giữa ảnh và sidebar */
+  align-items: flex-start;
+  margin-bottom: 60px;
+}
+
+/* Điều hướng vị trí ghi chú */
+.layout-right {
+  flex-direction: row;
+}
+.layout-left {
+  flex-direction: row-reverse;
+}
+
+/* Khối chứa ảnh */
+.img-container {
+  flex: 0 0 65%; /* Ảnh chiếm 65% độ rộng */
+}
+
+.detail-img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
+  display: block;
+}
+
+/* --- SIDEBAR CHỨA GHI CHÚ --- */
+.insights-sidebar {
+  flex: 1; /* Chiếm phần còn lại */
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Khoảng cách giữa các thẻ ghi chú */
+}
+
+/* Style cho từng thẻ ghi chú */
+.comment-box {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  border-left: 4px solid var(--dark);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+  width: 100%; /* Đảm bảo không bị đè lên nhau */
+}
+
+.comment-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.comment-box h4 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: var(--dark);
+}
+
+.comment-box p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 0;
+}
+
+/* Thẻ cảnh báo (Dành cho các chỉ số giảm/báo động) */
+.comment-box.alert {
+  border-left-color: var(--red-alert);
+}
+
+.insight-list {
+  margin-top: 12px;
+  padding-left: 18px;
+  list-style-type: circle;
+}
+
+.insight-list li {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+/* --- RESPONSIVE (MOBILE) --- */
+@media (max-width: 992px) {
+  nav {
+    padding: 1.5rem 2rem;
+  }
+
+  .detail-hero {
+    padding: 8rem 2rem 3rem;
+  }
+
+  .detail-hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .detail-container {
+    padding: 0 2rem 4rem;
+  }
+
+  .image-wrapper,
+  .image-wrapper.layout-left,
+  .image-wrapper.layout-right {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .img-container,
+  .insights-sidebar {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+}
+
+/* Container cho ảnh và note */
+.main-image-container {
+  width: 100%;
+  margin-bottom: 20px; /* Khoảng cách nhỏ giữa ảnh và thẻ note */
+}
+
+.full-width-img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px 12px 0 0; /* Bo góc trên */
+  display: block;
+}
+
+/* Thẻ ghi chú tổng hợp */
+.analysis-card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 0 0 12px 12px; /* Bo góc dưới để khớp với ảnh */
+  border: 1px solid #eee;
+  border-top: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Chia 3 cột bên trong thẻ note */
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Chia 3 cột bằng nhau */
+  gap: 30px;
+}
+
+.analysis-group h4 {
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.analysis-group p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* Hiệu ứng cho phần cảnh báo */
+.analysis-group.alert h4 {
+  color: #e74c3c;
+}
+
+/* Responsive: Khi màn hình nhỏ (Tablet/Mobile) thì xếp chồng 3 nhóm */
+@media (max-width: 992px) {
+  .analysis-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.zoom-in-img-wrapper {
+  width: 100%;
+  height: 150px; /* Chiều cao nhỏ gọn cho hình zoom-in */
+  margin-bottom: 15px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+
+.zoom-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Để ảnh zoom vào phần trọng tâm */
+  transition: transform 0.3s ease;
+}
+
+.analysis-group:hover .zoom-img {
+  transform: scale(1.1); /* Hiệu ứng nhẹ khi hover vào thẻ */
+}
+.github-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  /* background-color: #858585; Màu đặc trưng của GitHub */
+  color: black;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.github-btn:hover {
+  background-color: #332d50;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio — Chử Trần Phương Nam</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="portfolio-detail.css" />
+  </head>
+  <body>
+    <nav>
+      <a href="index.html" class="nav-logo">Nam Phương</a>
+      <ul class="nav-links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="index.html" class="back-btn">
+        <span class="arrow">←</span> Back
+      </a>
+    </nav>
+
+    <header class="detail-hero">
+      <div class="breadcrumb">
+        <a href="index.html">Portfolio</a> / <span>Project Detail</span>
+      </div>
+      <h1>Automated Data Platform for Multi-branch Business</h1>
+    </header>
+    <main class="detail-container">
+      
+      <section class="project-section">
+        <div class="detail-container">
+          <div class="project-links">
+            <a
+              href="https://github.com/ctpn0011111/E-Commerce-Data-Pipeline-End-to-End"
+              target="_blank"
+              class="github-btn"
+            >
+              <i class="fab fa-github"></i> GitHub Repository
+            </a>
+          </div>
+          <div class="main-image-container intro-figure">
+            <img
+              src="img/diagram.png"
+              alt="Sơ đồ quan hệ các bảng dữ liệu: orders, order_items, customers, payments, reviews, sellers và geolocation"
+              class="full-width-img"
+            />
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="max-width: 600px;"> 
+              <p style="text-align: justify; margin-bottom: 15px;">
+                Dữ liệu được thiết kế với mô hình Star Schema với bảng fact là order dataset, order item dataset. Các bảng dimension bao gồm: order payments dataset, products dataset, sellers dataset, geolocation dataset, order customer dataset, order reviews dataset.
+              </p>
+              <p style="text-align: justify;">
+                Dữ liệu lưu trữ trên PostgreSQL theo kiến trúc Medallion (Bronze – Silver – Gold)
+              </p>
+            </div>
+          </div>
+
+        
+
+          <div class="main-image-container intro-figure">
+            <img
+              src="img/chart.png"
+              alt="Phân bổ khối lượng dữ liệu orders, customers và order_items theo Hà Nội, TP.HCM và Đà Nẵng"
+              class="full-width-img"
+            />
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="max-width: 600px;"> 
+              <p style="text-align: justify; margin-bottom: 15px;">
+                Dữ liệu được thực hiện giả lập trên trên 2 nguồn khác nhau là CSV (HN,DN) và RDBMS (HCM). 
+                Với 2 nguồn đại diện cho 3 chi nhánh khác nhau, việc giả lập giúp tổng hợp dữ liệu từ nhiều chi 
+                nhánh để thành 1 kho lưu trữ duy nhất trên Data Warehouse. </p>
+
+                <p style="text-align: justify;">
+                  Tổng số lượng đơn hàng trong 3 chi nhánh khoảng 422.000, trong đó Hồ Chí Minh chiếm hơn 65% trên tổng số.
+                </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-container">
+
+          <div class="main-image-container">
+            <img
+              src="img/overview.png"
+              alt="Sales Overview Dashboard"
+              class="full-width-img"
+            />
+          </div>
+
+          <div class="analysis-card">
+            <div class="analysis-grid">
+              <div class="analysis-group alert">
+                <h4><span class="icon">📈</span> Sales Performance & Growth</h4>
+                <p>
+                  Doanh thu đạt <strong>331 tỷ (+23%)</strong>. Tuy nhiên, lượng
+                  khách hàng mới <strong>giảm mạnh 30%</strong> (~28,000 khách).
+                  Doanh thu hiện dựa vào tệp Loyal, Vip. Bên cạnh đó, 15% khách
+                  hàng đang ở nhóm có nguy cơ rời bỏ cao At Risk.
+                </p>
+              </div>
+
+              <div class="analysis-group">
+                <h4><span class="icon">📦</span> Product</h4>
+                <p>
+                  Nhóm Tools dẫn đầu (100 tỷ), theo sau là Lubricants và
+                  Bearings.
+                </p>
+                <p>
+                  Số đơn hàng và doanh thu tăng tuyến tính từ giữa các tháng và
+                  tăng nhanh vào các tháng trong quý 4.
+                </p>
+              </div>
+
+              <div class="analysis-group">
+                <h4><span class="icon">💰</span> Marketing ROI</h4>
+                <p>
+                  Chỉ số <strong>ROI đạt 1.82</strong> cho thấy chiến lược của
+                  công ty đang mang lại doanh thu ổn định.
+                </p>
+                <p>
+                  Nhìn vào việc khách hàng giảm ta thấy được chiến lược đang ảnh
+                  hưởng trên tập khách hàng trung thành thay vì tập khách hàng
+                  mới.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- card 2 -->
+        <div class="detail-container">
+          <div class="main-image-container">
+            <img
+              src="img/overview.png"
+              alt="Sales Overview Dashboard"
+              class="full-width-img"
+            />
+          </div>
+
+          <div class="analysis-card">
+            <div class="analysis-grid">
+              <div class="analysis-group alert">
+                <h4><span class="icon">📈</span> Sales Performance & Growth</h4>
+                <p>
+                  Doanh thu đạt <strong>331 tỷ (+23%)</strong>. Tuy nhiên, lượng
+                  khách hàng mới <strong>giảm mạnh 30%</strong> (~28,000 khách).
+                  Doanh thu hiện dựa vào tệp Loyal, Vip. Bên cạnh đó, 15% khách
+                  hàng đang ở nhóm có nguy cơ rời bỏ cao At Risk.
+                </p>
+              </div>
+
+              <div class="analysis-group">
+                <h4><span class="icon">📦</span> Product</h4>
+                <p>
+                  Nhóm Tools dẫn đầu (100 tỷ), theo sau là Lubricants và
+                  Bearings.
+                </p>
+                <p>
+                  Số đơn hàng và doanh thu tăng tuyến tính từ giữa các tháng và
+                  tăng nhanh vào các tháng trong quý 4.
+                </p>
+              </div>
+
+              <div class="analysis-group">
+                <h4><span class="icon">💰</span> Marketing ROI</h4>
+                <p>
+                  Chỉ số <strong>ROI đạt 1.82</strong> cho thấy chiến lược của
+                  công ty đang mang lại doanh thu ổn định.
+                </p>
+                <p>
+                  Nhìn vào việc khách hàng giảm ta thấy được chiến lược đang ảnh
+                  hưởng trên tập khách hàng trung thành thay vì tập khách hàng
+                  mới.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="project-section">
+        <div class="detail-container">
+          <div class="main-image-container">
+            <img
+              src="img/operational.png"
+              alt="Sales Overview Dashboard"
+              class="full-width-img"
+            />
+          </div>
+
+          <div class="analysis-card">
+            <div class="analysis-grid">
+              <div class="analysis-group alert">
+                <h4><span class="icon">⏱️</span> Process Bottlenecks</h4>
+                <p>
+                  Việc thiếu ca tối khiến 40% đơn hàng sau 20h bị trễ 8-10
+                  tiếng. Chỉ số <strong>OTD thấp</strong> chủ yếu do khâu xử lý
+                  nội bộ, không phải do vận chuyển.
+                </p>
+              </div>
+
+              <div class="analysis-group">
+                <h4><span class="icon">🚛</span> Carrier Performance</h4>
+                <p>
+                  VNPost tại miền Bắc/Trung trễ kỷ lục (30-50%). Cần thay thế
+                  bằng các đơn vị <strong>Top Performers</strong> như
+                  GHTK/Viettel Post để đồng bộ chất lượng.
+                </p>
+              </div>
+
+              <div class="analysis-group">
+                <h4><span class="icon">🚀</span> Strategic Action</h4>
+                <p>
+                  Triển khai ca trực tối tại HCM để giảm xử lý đơn xuống
+                  <strong>2 ngày</strong>. Mục tiêu tăng LTV và tối ưu hóa hiệu
+                  quả ngân sách Marketing.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="project-section">
+        <div class="detail-container">
+          <div class="main-image-container">
+            <img
+              src="img/forecast.png"
+              alt="Sales Overview Dashboard"
+              class="full-width-img"
+            />
+          </div>
+
+          <div class="analysis-card">
+            <div class="analysis-grid">
+              <div class="analysis-group">
+                <h4><span class="icon">🔮</span> Growth Projection</h4>
+                <p>
+                  Doanh thu Q1 dự kiến tăng <strong>[X]%</strong>. Xu hướng AOV
+                  giảm nhưng Customer tăng là cơ hội vàng để thực hiện các chiến
+                  dịch <strong>Customer Acquisition</strong> quy mô lớn.
+                </p>
+              </div>
+
+              <div class="analysis-group">
+                <h4><span class="icon">📍</span> Regional Demand</h4>
+                <p>
+                  Khu vực HCM dự báo tăng trưởng <strong>~54%</strong>. Yêu cầu
+                  cấp thiết về việc tối ưu hóa quy trình đóng gói và vận chuyển
+                  để bảo vệ uy tín thương hiệu tại thị trường lõi.
+                </p>
+              </div>
+
+              <div class="analysis-group">
+                <h4><span class="icon">📊</span> Model Reliability</h4>
+                <p>
+                  Với chỉ số sai số <strong>MAPE 6-8%</strong>, các con số dự
+                  báo cung cấp nền tảng vững chắc cho việc lập kế hoạch tồn kho
+                  và điều phối nhân sự trong giai đoạn cao điểm.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="portfolio-detail.js"></script>
+  </body>
+</html>

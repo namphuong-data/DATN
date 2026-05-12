@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio — Chử Trần Phương Nam</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="portfolio-detail2.css" />
+  </head>
+  <body>
+    <nav>
+      <a href="#" class="nav-logo">Nam Phương</a>
+      <ul class="nav-links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="index.html" class="back-btn">
+        <span class="arrow">←</span> Back
+      </a>
+    </nav>
+
+    <header class="detail-hero">
+      <div class="breadcrumb">
+        <a href="index.html">Portfolio</a> / <span>Project Detail</span>
+      </div>
+      <h1>Real-time Movie Recommendation MLOps Platform</h1>
+    </header>
+    <main class="detail-container">
+      <section class="project-section">
+        <div class="detail-container">
+          <div class="project-links">
+            <a
+              href="https://github.com/ctpn0011111/mlops-for-movie-recommendation"
+              target="_blank"
+              class="github-btn"
+            >
+              <i class="fab fa-github"></i> GitHub Repository
+            </a>
+          </div>
+          <div class="main-image-container">
+            <img
+              src="img/kientruc.png"
+              alt="Sales Overview Dashboard"
+              class="full-width-img"
+            />
+          </div>
+
+          <div class="analysis-card">
+            <div class="analysis-grid">
+              <div class="analysis-group">
+                <div class="zoom-in-img-wrapper">
+                  <img
+                    src="img/zoom1.png"
+                    class="zoom-img"
+                    alt="Data Pipeline"
+                  />
+                </div>
+                <h4><span class="icon">⚙️</span> Data & Orchestration</h4>
+                <p>
+                  Điều phối <strong>Medallion Pipeline</strong> qua Airflow,
+                  chuẩn hóa dữ liệu từ Kafka để đảm bảo Feature Quality.
+                </p>
+              </div>
+
+              <div class="analysis-group">
+                <div class="zoom-in-img-wrapper">
+                  <img
+                    src="img/zoom2.png"
+                    class="zoom-img"
+                    alt="ML Lifecycle"
+                  />
+                </div>
+                <h4><span class="icon">🧠</span> ML & Serving</h4>
+                <p>
+                  Quản lý <strong>Model Registry</strong> và tối ưu Serving
+                  Latency với <strong>Redis Feature Store</strong> cho tốc độ
+                  Real-time.
+                </p>
+              </div>
+
+              <div class="analysis-group">
+                <div class="zoom-in-img-wrapper">
+                  <img src="img/zoom3.png" class="zoom-img" alt="Monitoring" />
+                </div>
+                <h4><span class="icon">🛠️</span> Monitoring</h4>
+                <p>
+                  Theo dõi <strong>Model Drift</strong> và sức khỏe hệ thống qua
+                  Grafana, đảm bảo tính ổn định của Microservices.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="portfolio-detail.js"></script>
+  </body>
+</html>
